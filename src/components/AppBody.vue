@@ -1,5 +1,6 @@
 <script>
 import Card from './Card.vue';
+import SelectType from './SelectType.vue';
 import { store } from "../store";
 
 export default {
@@ -10,8 +11,10 @@ export default {
         }
     },
     components: {
-        Card
+        Card,
+        SelectType
     },
+
 }
 </script>
 
@@ -19,6 +22,8 @@ export default {
     <div class="py-5">
 
         <div class="container w-75">
+            <SelectType class="mb-5" @filter="$emit(`filterUp`)" />
+            <div v-if="store.loading" class="text-center">CARICAMENTO</div>
             <div class="card-section row column-5 justify-content-center boredr-0">
                 <Card v-for="(card, index) in store.cards" :key="index" :card="card" :index="index" />
 

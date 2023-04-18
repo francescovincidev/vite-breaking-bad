@@ -18,13 +18,29 @@ export default {
     }
   },
   mounted() {
-    store.loading = true;
-    axios.get(store.apiURL).then((resp) => {
-      this.store.cards = resp.data.data;
-      this.store.cards.slice(0, 20);
-      store.loading = false;
-    })
-    // console.log(this.store.cards);
+    this.getCards();
+
+  },
+  methods: {
+    getCards() {
+      this.store.loading = true;
+      const params = {};
+      if(this.store.selectedType){
+        params.archetype = this.store.selectedType;
+      }
+      axios.get(this.store.apiURL,{
+        params
+      }).then(resp =>{
+        this.store.cards = resp.data.data;
+      }).catch(error =>{
+        console.log(error);
+      }).finally(() =>{
+        this.store.loading = false;
+      })
+    },
+    filtrType() {
+      this.getCards();
+    }
   }
 }
 </script>
@@ -32,7 +48,7 @@ export default {
 <template>
   <AppHeader />
   <div class="card-section">
-    <AppBody />
+    <AppBody @filterUp="filtrType" />
 
   </div>
 </template>
